@@ -1,40 +1,40 @@
-const API_BASE = "http://localhost:5283/api";
+import type { User } from "./types";
 
-export interface User {
-  id?: number;      // id pode ser opcional quando criar novo
-  name: string;
-  email: string;
-  senha: string;
-}
+const API_BASE = "http://localhost:5283/api/Usuarios";
 
+// pegar todos os usuários
 export async function getUsers(): Promise<User[]> {
-  const res = await fetch(`${API_BASE}/Usuarios`);
-  if (!res.ok) throw new Error("Erro ao carregar usuários");
+  const res = await fetch(API_BASE);
+  if (!res.ok) throw new Error("Erro ao buscar usuários");
   return res.json();
 }
 
-export async function createUser(data: User): Promise<User> {
-  const res = await fetch(`${API_BASE}/Usuarios`, {
+// criar usuário (não mandamos o id)
+export async function createUser(user: Omit<User, "id">): Promise<User> {
+  const res = await fetch(API_BASE, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data),
+    body: JSON.stringify(user),
   });
   if (!res.ok) throw new Error("Erro ao criar usuário");
   return res.json();
 }
 
-export async function updateUser(id: number, data: User): Promise<boolean> {
-  const res = await fetch(`${API_BASE}/Usuarios/${id}`, {
+// atualizar usuário
+export async function updateUser(id: number, user: Omit<User, "id">): Promise<User> {
+  const res = await fetch(`${API_BASE}/${id}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ id, ...data }), // envia id + dados
+    body: JSON.stringify(user),
   });
   if (!res.ok) throw new Error("Erro ao atualizar usuário");
-  return true; // API retorna 204
+  return res.json();
 }
 
-export async function deleteUser(id: number): Promise<boolean> {
-  const res = await fetch(`${API_BASE}/Usuarios/${id}`, { method: "DELETE" });
-  if (!res.ok) throw new Error("Erro ao deletar usuário");
-  return true;
+// deletar usuário
+export async function deleteUser(id: number): Promise<void> {
+  const res = await fetch(`${API_BASE}/${id}`, {
+    method: "DELETE",
+  });
+  if (!res.ok) throw new Error("Erro ao excluir usuário");
 }
