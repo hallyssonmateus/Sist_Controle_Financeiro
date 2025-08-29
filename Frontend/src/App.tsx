@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { createUser, deleteUser, getUsers, updateUser } from "./Api";
+import { createUser, deleteUser, getUsers, updateUser } from "../src/Services/Api";
 import type { User } from "./types";
 import UserForm from "./components/UserForm";
 import UserTable from "./components/UserTable";

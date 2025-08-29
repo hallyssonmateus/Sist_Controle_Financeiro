@@ -1,4 +1,4 @@
-import type { User } from "./types";
+import type { User } from "../types";
 
 const API_BASE = "http://localhost:5283/api/Usuarios";
 
